@@ -1,1 +1,3 @@
+# 本机构建缓存和输出不提交；VS 可从项目根目录的 CMakePresets.json 重新生成工程。
 /build/
+/build-vs2026/

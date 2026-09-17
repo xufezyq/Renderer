@@ -1,3 +1,5 @@
-# 本机构建缓存和输出不提交；VS 可从项目根目录的 CMakePresets.json 重新生成工程。
+# 仅排除编译缓存和二进制；根目录的 .slnx/.vcxproj 提交到仓库。
 /build/
 /build-vs2026/
+/vs-out/
+/vs-obj/

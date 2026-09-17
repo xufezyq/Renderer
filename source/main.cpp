@@ -1,29 +1,30 @@
-﻿#include <iostream>
-#include <MiniFB.h>
+#include "Renderer.h"
 
-int main() 
+#include <stdexcept>
+#include <string>
+
+int main(int argc, char* argv[])
 {
-    struct mfb_window* window = mfb_open_ex("my display", 800, 600, MFB_WF_RESIZABLE);
-    if (window == NULL)
-        return 0;
+    unsigned width = 800;
+    unsigned height = 600;
 
-    uint32_t* buffer = (uint32_t*)malloc(800 * 600 * 4);
+    try
+    {
+        if (argc == 3)
+        {
+            width = static_cast<unsigned>(std::stoul(argv[1]));
+            height = static_cast<unsigned>(std::stoul(argv[2]));
+        }
+        else if (argc != 1)
+        {
+            return 1;
+        }
 
-    mfb_update_state state;
-    do {
-        // TODO: add some fancy rendering to the buffer of size 800 * 600
-
-        state = mfb_update_ex(window, buffer, 800, 600);
-
-        if (state != MFB_STATE_OK)
-            break;
-
-    } while (mfb_wait_sync(window));
-
-    free(buffer);
-    buffer = NULL;
-    window = NULL;
-
-    return 0;
+        Renderer renderer(width, height);
+        return renderer.run();
+    }
+    catch (const std::exception&)
+    {
+        return 1;
+    }
 }
-

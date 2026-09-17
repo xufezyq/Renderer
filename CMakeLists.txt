@@ -12,6 +12,14 @@ file(GLOB_RECURSE APP_SOURCES CONFIGURE_DEPENDS
 )
  
 add_executable(FortuneRenderer ${APP_SOURCES})
+set_property(DIRECTORY PROPERTY VS_STARTUP_PROJECT FortuneRenderer)
+
+# Keep symbols available when debugging the Release configuration in Visual Studio.
+if (MSVC)
+    target_compile_options(FortuneRenderer PRIVATE /utf-8)
+    target_compile_options(FortuneRenderer PRIVATE $<$<CONFIG:Release>:/Zi>)
+    target_link_options(FortuneRenderer PRIVATE $<$<CONFIG:Release>:/DEBUG:FULL>)
+endif()
  
 # 头文件附加目录：minifb/include 和 glm
 target_include_directories(FortuneRenderer PRIVATE
@@ -42,4 +50,3 @@ target_link_libraries(FortuneRenderer PRIVATE
     advapi32)
 
 endif()
-

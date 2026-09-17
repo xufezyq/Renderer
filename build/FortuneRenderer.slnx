@@ -7,12 +7,12 @@
 		<BuildType Name="RelWithDebInfo"/>
 		<Platform Name="x64"/>
 	</Configurations>
-	<Project Path="FortuneRenderer.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="a98a0bc2-9bc1-3941-bc67-b58204b05932">
+	<Project Path="FortuneRenderer.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="a98a0bc2-9bc1-3941-bc67-b58204b05932" DefaultStartup="true">
 		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
 		<BuildDependency Project="minifb/minifb.vcxproj"/>
 	</Project>
 	<Folder Name="/CMakePredefinedTargets/">
-		<Project Path="ALL_BUILD.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="0b32b02c-892f-3e70-9206-e33a36501fac" DefaultStartup="true">
+		<Project Path="ALL_BUILD.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="0b32b02c-892f-3e70-9206-e33a36501fac">
 			<BuildDependency Project="FortuneRenderer.vcxproj"/>
 			<BuildDependency Project="ZERO_CHECK.vcxproj"/>
 			<BuildDependency Project="minifb/fullscreen.vcxproj"/>

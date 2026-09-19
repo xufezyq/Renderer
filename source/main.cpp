@@ -6,7 +6,9 @@
 int main(int argc, char* argv[])
 {
     unsigned width = 800;
-    unsigned height = 600;
+    unsigned height = 450;
+    constexpr bool enable_ssaa = true;
+    constexpr unsigned ssaa_samples_per_axis = 16;
 
     try
     {
@@ -20,7 +22,7 @@ int main(int argc, char* argv[])
             return 1;
         }
 
-        Renderer renderer(width, height);
+        Renderer renderer(width, height, enable_ssaa, ssaa_samples_per_axis);
         return renderer.run();
     }
     catch (const std::exception&)

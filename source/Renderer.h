@@ -1,7 +1,9 @@
 #pragma once
 
 #include "Camera.h"
+#include "Disk.h"
 #include "Sphere.h"
+#include "Triangle.h"
 
 #include <atomic>
 #include <cstddef>
@@ -20,15 +22,24 @@ struct Color
 class Renderer
 {
 public:
-    Renderer(unsigned width, unsigned height);
+    Renderer(
+        unsigned width,
+        unsigned height,
+        bool enable_ssaa = true,
+        unsigned samples_per_axis = 2);
     Color RednerPixel(int x, int y) const;
     int run();
 
 private:
+    Color renderSample(float x, float y) const;
     void renderWorker();
 
     Camera m_camera;
     Sphere m_sphere;
+    Disk m_disk;
+    Triangle m_triangle;
+    bool m_enableSsaa;
+    unsigned m_samplesPerAxis;
     unsigned m_viewportWidth;
     unsigned m_viewportHeight;
     std::vector<std::uint32_t> m_displayBuffer;

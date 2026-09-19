@@ -92,15 +92,15 @@ const glm::mat4& Camera::GetInverseCombinedMatrix() const
     return m_inverseCombinedMatrix;
 }
 
-Ray Camera::GetRay(int x, int y) const
+Ray Camera::GetRay(float x, float y) const
 {
     Ray ray;
     ray.origin = m_position;
 
     // 屏幕坐标的 Z 为 0，表示位于近裁剪面。
     const glm::vec4 screenPosition(
-        static_cast<float>(x),
-        static_cast<float>(y),
+        x,
+        y,
         0.0f,
         1.0f);
     glm::vec4 worldPosition = m_inverseCombinedMatrix * screenPosition;

@@ -174,9 +174,17 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </ProjectReference>
+    <ProjectReference Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\build\DiskTests.vcxproj">
+      <Project>{04C4FAC0-5287-3317-B5CB-77BC3FF2CC4C}</Project>
+      <Name>DiskTests</Name>
+    </ProjectReference>
     <ProjectReference Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\build\FortuneRenderer.vcxproj">
       <Project>{A98A0BC2-9BC1-3941-BC67-B58204B05932}</Project>
       <Name>FortuneRenderer</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\build\RenderTimingTests.vcxproj">
+      <Project>{F9570764-8FBD-38E7-BAFA-1D17D36CEF21}</Project>
+      <Name>RenderTimingTests</Name>
     </ProjectReference>
     <ProjectReference Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\build\RendererTests.vcxproj">
       <Project>{5D5A4ED7-0F86-3FF6-8BF1-7A3FD726953C}</Project>
@@ -185,6 +193,10 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ProjectReference Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\build\SphereTests.vcxproj">
       <Project>{5091584F-BA90-3F7A-8E85-3F35C6D00A3B}</Project>
       <Name>SphereTests</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\build\TriangleTests.vcxproj">
+      <Project>{69151340-DAAB-39A9-B887-C0C050A8FD7F}</Project>
+      <Name>TriangleTests</Name>
     </ProjectReference>
     <ProjectReference Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\build\minifb\fullscreen.vcxproj">
       <Project>{18607DF3-0EB7-3302-BBB4-E404D86E46AE}</Project>

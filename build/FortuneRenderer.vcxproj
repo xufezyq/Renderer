@@ -373,11 +373,18 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   <ItemGroup>
     <ClCompile Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\source\Camera.cpp" />
     <ClInclude Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\source\Camera.h" />
+    <ClCompile Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\source\Disk.cpp" />
+    <ClInclude Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\source\Disk.h" />
+    <ClInclude Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\source\Intersection.h" />
     <ClInclude Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\source\Ray.h" />
+    <ClCompile Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\source\RenderTiming.cpp" />
+    <ClInclude Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\source\RenderTiming.h" />
     <ClCompile Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\source\Renderer.cpp" />
     <ClInclude Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\source\Renderer.h" />
     <ClCompile Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\source\Sphere.cpp" />
     <ClInclude Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\source\Sphere.h" />
+    <ClCompile Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\source\Triangle.cpp" />
+    <ClInclude Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\source\Triangle.h" />
     <ClCompile Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\source\main.cpp" />
   </ItemGroup>
   <ItemGroup />

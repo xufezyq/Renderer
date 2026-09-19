@@ -4,10 +4,19 @@
     <ClCompile Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\source\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\source\Disk.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\source\RenderTiming.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\source\Renderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\source\Sphere.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\source\Triangle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\source\main.cpp">
@@ -18,13 +27,25 @@
     <ClInclude Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\source\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\source\Disk.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\source\Intersection.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\source\Ray.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\source\RenderTiming.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\source\Renderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\source\Sphere.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\source\Triangle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -5,12 +5,12 @@
 
 #include <glm/glm.hpp>
 
-class Sphere
+class Disk
 {
 public:
-    Sphere(const glm::vec3& center, float radius);
+    Disk(const glm::vec3& center, float radius);
 
-    // 返回射线范围内最近的世界空间交点信息。
+    // 圆盘位于局部 XY 平面，法线朝向局部 +Z。
     bool Intersect(const Ray& ray, Intersection& intersection) const;
 
 private:

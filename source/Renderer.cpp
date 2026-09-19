@@ -1,4 +1,5 @@
 #include "Renderer.h"
+#include "RenderTiming.h"
 
 #include <algorithm>
 #include <chrono>
@@ -24,8 +25,19 @@ namespace
     }
 }
 
-Renderer::Renderer(unsigned width, unsigned height)
-    : m_sphere(glm::vec3(0.0f), 1.0f),
+Renderer::Renderer(
+    unsigned width,
+    unsigned height,
+    bool enable_ssaa,
+    unsigned samples_per_axis)
+    : m_sphere(glm::vec3(0.0f, 0.0f, 3.0f), 0.7f),
+      m_disk(glm::vec3(1.55f, 0.0f, 3.0f), 0.7f),
+      m_triangle(
+          glm::vec3(-2.25f, -0.7f, 3.0f),
+          glm::vec3(-0.85f, -0.7f, 3.0f),
+          glm::vec3(-1.55f, 0.7f, 3.0f)),
+      m_enableSsaa(enable_ssaa),
+      m_samplesPerAxis(samples_per_axis),
       m_viewportWidth(width),
       m_viewportHeight(height),
       m_displayBuffer(static_cast<std::size_t>(width) * height),
@@ -33,10 +45,12 @@ Renderer::Renderer(unsigned width, unsigned height)
 {
     if (width == 0 || height == 0)
         throw std::invalid_argument("Renderer dimensions must be greater than zero");
+    if (samples_per_axis == 0)
+        throw std::invalid_argument("SSAA samples per axis must be greater than zero");
 
-    // 左手坐标系中，相机位于 Z 轴负方向并朝向 +Z。
+    // 左手坐标系中，相机位于原点并朝向 +Z。
     m_camera.Initialize(
-        glm::vec3(0.0f, 0.0f, -3.0f),
+        glm::vec3(0.0f),
         glm::vec3(0.0f, 0.0f, 1.0f),
         glm::vec3(0.0f, 1.0f, 0.0f),
         60.0f,
@@ -48,23 +62,77 @@ Renderer::Renderer(unsigned width, unsigned height)
 
 Color Renderer::RednerPixel(int x, int y) const
 {
-    //std::this_thread::sleep_for(std::chrono::milliseconds(1));
-
-    // 生成一条从摄像机出发并穿过当前像素的世界空间射线。
-    const Ray ray = m_camera.GetRay(x, y);
-    Intersection intersection{};
-    if (m_sphere.Intersect(ray, intersection))
+    if (!m_enableSsaa)
     {
-        // 将法线分量从 [-1, 1] 映射到可显示的 [0, 1] 颜色范围。
-        return Color{
-            intersection.normal.x * 0.5f + 0.5f,
-            intersection.normal.y * 0.5f + 0.5f,
-            intersection.normal.z * 0.5f + 0.5f};
+        return renderSample(
+            static_cast<float>(x) + 0.5f,
+            static_cast<float>(y) + 0.5f);
     }
 
+    const float samples_per_axis = static_cast<float>(m_samplesPerAxis);
+    const float sample_scale = 1.0f / samples_per_axis;
+    const float sample_weight = 1.0f / (samples_per_axis * samples_per_axis);
+
+    Color accumulated_color{};
+    for (unsigned sample_y = 0; sample_y < m_samplesPerAxis; ++sample_y)
+    {
+        for (unsigned sample_x = 0; sample_x < m_samplesPerAxis; ++sample_x)
+        {
+            const float offset_x = (static_cast<float>(sample_x) + 0.5f) * sample_scale;
+            const float offset_y = (static_cast<float>(sample_y) + 0.5f) * sample_scale;
+            const Color sample_color = renderSample(
+                static_cast<float>(x) + offset_x,
+                static_cast<float>(y) + offset_y);
+
+            accumulated_color.r += sample_color.r * sample_weight;
+            accumulated_color.g += sample_color.g * sample_weight;
+            accumulated_color.b += sample_color.b * sample_weight;
+        }
+    }
+
+    return accumulated_color;
+}
+
+Color Renderer::renderSample(float x, float y) const
+{
+    // 生成一条从摄像机出发并穿过当前像素的世界空间射线。
+    const Ray ray = m_camera.GetRay(x, y);
+    Intersection candidate{};
+    float closest_t = ray.maxT;
+    Color closest_color{};
+    bool has_hit = false;
+
+    if (m_sphere.Intersect(ray, candidate))
+    {
+        // 将法线分量从 [-1, 1] 映射到可显示的 [0, 1] 颜色范围。
+        closest_t = candidate.t;
+        closest_color = Color{
+            candidate.normal.x * 0.5f + 0.5f,
+            candidate.normal.y * 0.5f + 0.5f,
+            candidate.normal.z * 0.5f + 0.5f};
+        has_hit = true;
+    }
+
+    if (m_disk.Intersect(ray, candidate) && candidate.t < closest_t)
+    {
+        closest_t = candidate.t;
+        closest_color = Color{1.0f, 1.0f, 0.0f};
+        has_hit = true;
+    }
+
+    if (m_triangle.Intersect(ray, candidate) && candidate.t < closest_t)
+    {
+        closest_t = candidate.t;
+        closest_color = Color{0.0f, 1.0f, 1.0f};
+        has_hit = true;
+    }
+
+    if (has_hit)
+        return closest_color;
+
     return Color{
-        static_cast<float>(x) / static_cast<float>(m_viewportWidth),
-        static_cast<float>(y) / static_cast<float>(m_viewportHeight),
+        x / static_cast<float>(m_viewportWidth),
+        y / static_cast<float>(m_viewportHeight),
         0.0f};
 }
 
@@ -91,10 +159,15 @@ void Renderer::renderWorker()
 
 int Renderer::run()
 {
-    mfb_window* window = mfb_open_ex("my display", m_viewportWidth, m_viewportHeight, MFB_WF_RESIZABLE);
+    mfb_window* window = mfb_open_ex(
+        "FortuneRenderer - Rendering...",
+        m_viewportWidth,
+        m_viewportHeight,
+        MFB_WF_RESIZABLE);
     if (window == nullptr)
         return 0;
 
+    const auto render_start_time = std::chrono::steady_clock::now();
     const unsigned availableThreads = std::thread::hardware_concurrency();
     const std::size_t workerCount = std::min<std::size_t>(
         availableThreads == 0 ? 1 : availableThreads, m_renderBuffer.size());
@@ -116,6 +189,8 @@ int Renderer::run()
 
     mfb_update_state state = MFB_STATE_OK;
     std::vector<std::size_t> completedPixels;
+    std::size_t displayed_pixel_count = 0;
+    bool render_time_displayed = false;
 
     do
     {
@@ -123,6 +198,7 @@ int Renderer::run()
             std::lock_guard<std::mutex> lock(m_bufferMutex);
             completedPixels.swap(m_completedPixels);
         }
+        displayed_pixel_count += completedPixels.size();
         for (const std::size_t index : completedPixels)
             m_displayBuffer[index] = m_renderBuffer[index];
         completedPixels.clear();
@@ -130,6 +206,16 @@ int Renderer::run()
         state = mfb_update_ex(window, m_displayBuffer.data(), m_viewportWidth, m_viewportHeight);
         if (state != MFB_STATE_OK)
             break;
+
+        if (!render_time_displayed && displayed_pixel_count >= m_displayBuffer.size())
+        {
+            const auto render_end_time = std::chrono::steady_clock::now();
+            const double elapsed_milliseconds =
+                std::chrono::duration<double, std::milli>(render_end_time - render_start_time).count();
+            const std::string title = FormatRenderTime(elapsed_milliseconds);
+            mfb_set_title(window, title.c_str());
+            render_time_displayed = true;
+        }
     } while (mfb_wait_sync(window));
 
     m_stopRendering.store(true);

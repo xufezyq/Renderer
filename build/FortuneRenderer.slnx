@@ -7,9 +7,15 @@
 		<BuildType Name="RelWithDebInfo"/>
 		<Platform Name="x64"/>
 	</Configurations>
+	<Project Path="DiskTests.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="04c4fac0-5287-3317-b5cb-77bc3ff2cc4c">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+	</Project>
 	<Project Path="FortuneRenderer.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="a98a0bc2-9bc1-3941-bc67-b58204b05932" DefaultStartup="true">
 		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
 		<BuildDependency Project="minifb/minifb.vcxproj"/>
+	</Project>
+	<Project Path="RenderTimingTests.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="f9570764-8fbd-38e7-bafa-1d17d36cef21">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
 	</Project>
 	<Project Path="RendererTests.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="5d5a4ed7-0f86-3ff6-8bf1-7a3fd726953c">
 		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
@@ -18,11 +24,17 @@
 	<Project Path="SphereTests.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="5091584f-ba90-3f7a-8e85-3f35c6d00a3b">
 		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
 	</Project>
+	<Project Path="TriangleTests.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="69151340-daab-39a9-b887-c0c050a8fd7f">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+	</Project>
 	<Folder Name="/CMakePredefinedTargets/">
 		<Project Path="ALL_BUILD.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="0b32b02c-892f-3e70-9206-e33a36501fac">
+			<BuildDependency Project="DiskTests.vcxproj"/>
 			<BuildDependency Project="FortuneRenderer.vcxproj"/>
+			<BuildDependency Project="RenderTimingTests.vcxproj"/>
 			<BuildDependency Project="RendererTests.vcxproj"/>
 			<BuildDependency Project="SphereTests.vcxproj"/>
+			<BuildDependency Project="TriangleTests.vcxproj"/>
 			<BuildDependency Project="ZERO_CHECK.vcxproj"/>
 			<BuildDependency Project="minifb/fullscreen.vcxproj"/>
 			<BuildDependency Project="minifb/hide_cursor.vcxproj"/>

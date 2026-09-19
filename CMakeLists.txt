@@ -43,11 +43,41 @@ if (MSVC)
 endif()
 add_test(NAME SphereTests COMMAND SphereTests)
 
+add_executable(DiskTests tests/DiskTests.cpp source/Disk.cpp)
+target_include_directories(DiskTests PRIVATE
+    "${CMAKE_SOURCE_DIR}/source"
+    "${CMAKE_SOURCE_DIR}/glm"
+)
+if (MSVC)
+    target_compile_options(DiskTests PRIVATE /utf-8)
+endif()
+add_test(NAME DiskTests COMMAND DiskTests)
+
+add_executable(TriangleTests tests/TriangleTests.cpp source/Triangle.cpp)
+target_include_directories(TriangleTests PRIVATE
+    "${CMAKE_SOURCE_DIR}/source"
+    "${CMAKE_SOURCE_DIR}/glm"
+)
+if (MSVC)
+    target_compile_options(TriangleTests PRIVATE /utf-8)
+endif()
+add_test(NAME TriangleTests COMMAND TriangleTests)
+
+add_executable(RenderTimingTests tests/RenderTimingTests.cpp source/RenderTiming.cpp)
+target_include_directories(RenderTimingTests PRIVATE "${CMAKE_SOURCE_DIR}/source")
+if (MSVC)
+    target_compile_options(RenderTimingTests PRIVATE /utf-8)
+endif()
+add_test(NAME RenderTimingTests COMMAND RenderTimingTests)
+
 add_executable(RendererTests
     tests/RendererTests.cpp
     source/Camera.cpp
+    source/Disk.cpp
+    source/RenderTiming.cpp
     source/Renderer.cpp
     source/Sphere.cpp
+    source/Triangle.cpp
 )
 target_include_directories(RendererTests PRIVATE
     "${CMAKE_SOURCE_DIR}/source"

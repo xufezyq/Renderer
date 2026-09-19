@@ -26,7 +26,7 @@ public:
     const glm::mat4& GetInverseCombinedMatrix() const;
 
     // 根据屏幕像素坐标生成一条从摄像机位置出发的世界空间射线。
-    Ray GetRay(int x, int y) const;
+    Ray GetRay(float x, float y) const;
 
 private:
     // 使用左手坐标系，投影后的 NDC 深度范围为 [0, 1]。

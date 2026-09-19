@@ -24,6 +24,9 @@
 		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
 		<BuildDependency Project="minifb/minifb.vcxproj"/>
 	</Project>
+	<Project Path="SceneTests.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="b68a41b9-02f7-38a8-b811-7d7d154d5153">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+	</Project>
 	<Project Path="SphereTests.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="5091584f-ba90-3f7a-8e85-3f35c6d00a3b">
 		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
 	</Project>
@@ -37,6 +40,7 @@
 			<BuildDependency Project="PrimitiveTests.vcxproj"/>
 			<BuildDependency Project="RenderTimingTests.vcxproj"/>
 			<BuildDependency Project="RendererTests.vcxproj"/>
+			<BuildDependency Project="SceneTests.vcxproj"/>
 			<BuildDependency Project="SphereTests.vcxproj"/>
 			<BuildDependency Project="TriangleTests.vcxproj"/>
 			<BuildDependency Project="ZERO_CHECK.vcxproj"/>

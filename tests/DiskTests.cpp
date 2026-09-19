@@ -20,22 +20,22 @@ namespace
 
 int main()
 {
-    const Disk disk(glm::vec3(1.0f, 2.0f, 3.0f), 2.0f);
+    const Disk disk(2.0f);
 
     Intersection intersection{};
-    const Ray center_ray{glm::vec3(1.0f, 2.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f)};
+    const Ray center_ray{glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.0f, 0.0f, 1.0f)};
     assert(disk.Intersect(center_ray, intersection));
     assert_near(intersection.t, 3.0f);
-    assert_vector_near(intersection.position, glm::vec3(1.0f, 2.0f, 3.0f));
+    assert_vector_near(intersection.position, glm::vec3(0.0f));
     assert_vector_near(intersection.normal, glm::vec3(0.0f, 0.0f, 1.0f));
 
-    const Ray outside_ray{glm::vec3(3.1f, 2.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f)};
+    const Ray outside_ray{glm::vec3(2.1f, 0.0f, -3.0f), glm::vec3(0.0f, 0.0f, 1.0f)};
     assert(!disk.Intersect(outside_ray, intersection));
 
-    const Ray parallel_ray{glm::vec3(1.0f, 2.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f)};
+    const Ray parallel_ray{glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(1.0f, 0.0f, 0.0f)};
     assert(!disk.Intersect(parallel_ray, intersection));
 
-    Ray clipped_ray{glm::vec3(1.0f, 2.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f)};
+    Ray clipped_ray{glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.0f, 0.0f, 1.0f)};
     clipped_ray.maxT = 2.0f;
     assert(!disk.Intersect(clipped_ray, intersection));
 

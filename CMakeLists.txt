@@ -10,8 +10,15 @@ file(GLOB_RECURSE APP_SOURCES CONFIGURE_DEPENDS
     "${CMAKE_SOURCE_DIR}/source/*.h"
     "${CMAKE_SOURCE_DIR}/source/*.hpp"
 )
- 
+
+set(SCENE_FILE "${CMAKE_SOURCE_DIR}/scene.xml")
+configure_file(
+    "${SCENE_FILE}"
+    "${CMAKE_CURRENT_BINARY_DIR}/scene.xml"
+    COPYONLY)
+
 add_executable(FortuneRenderer ${APP_SOURCES})
+target_sources(FortuneRenderer PRIVATE "${SCENE_FILE}")
 set_property(DIRECTORY PROPERTY VS_STARTUP_PROJECT FortuneRenderer)
 
 # Keep symbols available when debugging the Release configuration in Visual Studio.
@@ -80,12 +87,31 @@ if (MSVC)
 endif()
 add_test(NAME PrimitiveTests COMMAND PrimitiveTests)
 
+add_executable(SceneTests
+    tests/SceneTests.cpp
+    source/Disk.cpp
+    source/Scene.cpp
+    source/SceneObject.cpp
+    source/Sphere.cpp
+    source/Triangle.cpp
+)
+target_include_directories(SceneTests PRIVATE
+    "${CMAKE_SOURCE_DIR}/source"
+    "${CMAKE_SOURCE_DIR}/glm"
+)
+if (MSVC)
+    target_compile_options(SceneTests PRIVATE /utf-8)
+endif()
+add_test(NAME SceneTests COMMAND SceneTests)
+
 add_executable(RendererTests
     tests/RendererTests.cpp
     source/Camera.cpp
     source/Disk.cpp
     source/RenderTiming.cpp
     source/Renderer.cpp
+    source/Scene.cpp
+    source/SceneObject.cpp
     source/Sphere.cpp
     source/Triangle.cpp
 )
@@ -99,6 +125,13 @@ if (MSVC)
     target_compile_options(RendererTests PRIVATE /utf-8)
 endif()
 add_test(NAME RendererTests COMMAND RendererTests)
+
+foreach(target FortuneRenderer SceneTests RendererTests)
+    add_custom_command(TARGET ${target} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            "${CMAKE_CURRENT_BINARY_DIR}/scene.xml"
+            "$<TARGET_FILE_DIR:${target}>/scene.xml")
+endforeach()
 
 if (WIN32)
 

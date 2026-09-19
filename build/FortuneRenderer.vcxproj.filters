@@ -13,6 +13,12 @@
     <ClCompile Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\source\Renderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\source\Scene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\source\SceneObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\source\Sphere.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -45,6 +51,12 @@
     <ClInclude Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\source\Renderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\source\Scene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\source\SceneObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\source\Sphere.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -54,6 +66,9 @@
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <XML Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\scene.xml" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">

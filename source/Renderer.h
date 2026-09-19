@@ -1,16 +1,13 @@
 #pragma once
 
 #include "Camera.h"
-#include "Disk.h"
-#include "Primitive.h"
-#include "Sphere.h"
-#include "Triangle.h"
+#include "Scene.h"
 
 #include <atomic>
 #include <cstddef>
 #include <cstdint>
 #include <mutex>
-#include <memory>
+#include <string>
 #include <thread>
 #include <vector>
 
@@ -28,7 +25,8 @@ public:
         unsigned width,
         unsigned height,
         bool enable_ssaa = true,
-        unsigned samples_per_axis = 2);
+        unsigned samples_per_axis = 2,
+        const std::string& scene_file_path = "scene.xml");
     Color RednerPixel(int x, int y) const;
     int run();
 
@@ -37,7 +35,7 @@ private:
     void renderWorker();
 
     Camera m_camera;
-    std::vector<std::unique_ptr<Primitive>> m_primitives;
+    Scene m_scene;
     bool m_enableSsaa;
     unsigned m_samplesPerAxis;
     unsigned m_viewportWidth;

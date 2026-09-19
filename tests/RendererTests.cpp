@@ -68,6 +68,11 @@ int main()
     assert_near(gap_color.g, 0.5f);
     assert_near(gap_color.b, 0.0f);
 
+    const Renderer cornell_renderer(800, 600, true, 2, "cornell_box.xml");
+    const Color cornell_center = cornell_renderer.RednerPixel(400, 300);
+    assert(cornell_center.g > 0.9f);
+    assert(cornell_center.b > 0.9f);
+
     const Color corner_color = renderer.RednerPixel(0, 0);
     assert_near(corner_color.r, 0.0f);
     assert_near(corner_color.g, 0.0f);

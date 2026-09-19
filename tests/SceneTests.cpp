@@ -26,5 +26,11 @@ int main()
     assert(loaded_scene.Intersect(ray, loaded_intersection));
     assert(loaded_intersection.primitive != nullptr);
 
+    Scene cornell_scene;
+    cornell_scene.LoadSceneFromXML("cornell_box.xml");
+    Intersection cornell_intersection{};
+    assert(cornell_scene.Intersect(ray, cornell_intersection));
+    assert(cornell_intersection.primitive != nullptr);
+
     return 0;
 }

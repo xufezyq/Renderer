@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Cornell box for the current camera convention:
+    camera at (0, 0, 0), looking toward +Z.
+    The front of the box is open at z = 3.
+-->
+<scene>
+    <!-- Box shell: floor, ceiling, back, left wall and right wall. -->
+    <object position="0 0 0" euler="0 0 0" scale="0.6">
+        <!-- Floor, y = -2.5. -->
+        <triangle v0="-3 -2.5 3" v1="3 -2.5 3" v2="3 -2.5 9" />
+        <triangle v0="-3 -2.5 3" v1="3 -2.5 9" v2="-3 -2.5 9" />
+
+        <!-- Ceiling, y = 2.5. -->
+        <triangle v0="-3 2.5 3" v1="3 2.5 9" v2="3 2.5 3" />
+        <triangle v0="-3 2.5 3" v1="-3 2.5 9" v2="3 2.5 9" />
+
+        <!-- Back wall, z = 9. -->
+        <triangle v0="-3 -2.5 9" v1="3 -2.5 9" v2="3 2.5 9" />
+        <triangle v0="-3 -2.5 9" v1="3 2.5 9" v2="-3 2.5 9" />
+
+        <!-- Left wall, x = -3. -->
+        <triangle v0="-3 -2.5 3" v1="-3 -2.5 9" v2="-3 2.5 9" />
+        <triangle v0="-3 -2.5 3" v1="-3 2.5 9" v2="-3 2.5 3" />
+
+        <!-- Right wall, x = 3. -->
+        <triangle v0="3 -2.5 3" v1="3 2.5 9" v2="3 -2.5 9" />
+        <triangle v0="3 -2.5 3" v1="3 2.5 3" v2="3 2.5 9" />
+    </object>
+
+    <!-- Short box on the left. -->
+    <object position="0 0 0" euler="0 0 0" scale="0.6">
+        <!-- Front, z = 4.7. -->
+        <triangle v0="-2.3 -2.5 4.7" v1="-0.3 -2.5 4.7" v2="-0.3 0.7 4.7" />
+        <triangle v0="-2.3 -2.5 4.7" v1="-0.3 0.7 4.7" v2="-2.3 0.7 4.7" />
+
+        <!-- Back, z = 6.7. -->
+        <triangle v0="-2.3 -2.5 6.7" v1="-0.3 0.7 6.7" v2="-0.3 -2.5 6.7" />
+        <triangle v0="-2.3 -2.5 6.7" v1="-2.3 0.7 6.7" v2="-0.3 0.7 6.7" />
+
+        <!-- Left side, x = -2.3. -->
+        <triangle v0="-2.3 -2.5 4.7" v1="-2.3 0.7 4.7" v2="-2.3 0.7 6.7" />
+        <triangle v0="-2.3 -2.5 4.7" v1="-2.3 0.7 6.7" v2="-2.3 -2.5 6.7" />
+
+        <!-- Right side, x = -0.3. -->
+        <triangle v0="-0.3 -2.5 4.7" v1="-0.3 -2.5 6.7" v2="-0.3 0.7 6.7" />
+        <triangle v0="-0.3 -2.5 4.7" v1="-0.3 0.7 6.7" v2="-0.3 0.7 4.7" />
+
+        <!-- Top, y = 0.7. -->
+        <triangle v0="-2.3 0.7 4.7" v1="-0.3 0.7 6.7" v2="-0.3 0.7 4.7" />
+        <triangle v0="-2.3 0.7 4.7" v1="-2.3 0.7 6.7" v2="-0.3 0.7 6.7" />
+    </object>
+
+    <!-- Tall box on the right. -->
+    <object position="0 0 0" euler="0 0 0" scale="0.6">
+        <!-- Front, z = 6.0. -->
+        <triangle v0="0.4 -2.5 6.0" v1="2.3 -2.5 6.0" v2="2.3 1.5 6.0" />
+        <triangle v0="0.4 -2.5 6.0" v1="2.3 1.5 6.0" v2="0.4 1.5 6.0" />
+
+        <!-- Back, z = 8.1. -->
+        <triangle v0="0.4 -2.5 8.1" v1="2.3 1.5 8.1" v2="2.3 -2.5 8.1" />
+        <triangle v0="0.4 -2.5 8.1" v1="0.4 1.5 8.1" v2="2.3 1.5 8.1" />
+
+        <!-- Left side, x = 0.4. -->
+        <triangle v0="0.4 -2.5 6.0" v1="0.4 1.5 6.0" v2="0.4 1.5 8.1" />
+        <triangle v0="0.4 -2.5 6.0" v1="0.4 1.5 8.1" v2="0.4 -2.5 8.1" />
+
+        <!-- Right side, x = 2.3. -->
+        <triangle v0="2.3 -2.5 6.0" v1="2.3 -2.5 8.1" v2="2.3 1.5 8.1" />
+        <triangle v0="2.3 -2.5 6.0" v1="2.3 1.5 8.1" v2="2.3 1.5 6.0" />
+
+        <!-- Top, y = 1.5. -->
+        <triangle v0="0.4 1.5 6.0" v1="2.3 1.5 8.1" v2="2.3 1.5 6.0" />
+        <triangle v0="0.4 1.5 6.0" v1="0.4 1.5 8.1" v2="2.3 1.5 8.1" />
+    </object>
+
+    <!-- Visible test objects inside the box. -->
+    <object position="-0.8 -0.9 3.5" euler="0 0 0" scale="1">
+        <sphere radius="0.45" />
+    </object>
+    <object position="0.8 -0.6 4.1" euler="0 0 0" scale="1">
+        <sphere radius="0.55" />
+    </object>
+</scene>

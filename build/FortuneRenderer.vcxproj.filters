@@ -69,6 +69,7 @@
   </ItemGroup>
   <ItemGroup>
     <XML Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\scene.xml" />
+    <XML Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\cornell_box.xml" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">

@@ -12,13 +12,20 @@ file(GLOB_RECURSE APP_SOURCES CONFIGURE_DEPENDS
 )
 
 set(SCENE_FILE "${CMAKE_SOURCE_DIR}/scene.xml")
+set(CORNELL_SCENE_FILE "${CMAKE_SOURCE_DIR}/cornell_box.xml")
 configure_file(
     "${SCENE_FILE}"
     "${CMAKE_CURRENT_BINARY_DIR}/scene.xml"
     COPYONLY)
+configure_file(
+    "${CORNELL_SCENE_FILE}"
+    "${CMAKE_CURRENT_BINARY_DIR}/cornell_box.xml"
+    COPYONLY)
 
 add_executable(FortuneRenderer ${APP_SOURCES})
-target_sources(FortuneRenderer PRIVATE "${SCENE_FILE}")
+target_sources(FortuneRenderer PRIVATE
+    "${SCENE_FILE}"
+    "${CORNELL_SCENE_FILE}")
 set_property(DIRECTORY PROPERTY VS_STARTUP_PROJECT FortuneRenderer)
 
 # Keep symbols available when debugging the Release configuration in Visual Studio.
@@ -130,7 +137,10 @@ foreach(target FortuneRenderer SceneTests RendererTests)
     add_custom_command(TARGET ${target} POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_if_different
             "${CMAKE_CURRENT_BINARY_DIR}/scene.xml"
-            "$<TARGET_FILE_DIR:${target}>/scene.xml")
+            "$<TARGET_FILE_DIR:${target}>/scene.xml"
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            "${CMAKE_CURRENT_BINARY_DIR}/cornell_box.xml"
+            "$<TARGET_FILE_DIR:${target}>/cornell_box.xml")
 endforeach()
 
 if (WIN32)

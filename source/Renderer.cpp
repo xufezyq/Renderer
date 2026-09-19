@@ -25,7 +25,8 @@ namespace
 }
 
 Renderer::Renderer(unsigned width, unsigned height)
-    : m_viewportWidth(width),
+    : m_sphere(glm::vec3(0.0f), 1.0f),
+      m_viewportWidth(width),
       m_viewportHeight(height),
       m_displayBuffer(static_cast<std::size_t>(width) * height),
       m_renderBuffer(static_cast<std::size_t>(width) * height)
@@ -47,11 +48,19 @@ Renderer::Renderer(unsigned width, unsigned height)
 
 Color Renderer::RednerPixel(int x, int y) const
 {
-    std::this_thread::sleep_for(std::chrono::milliseconds(1));
+    //std::this_thread::sleep_for(std::chrono::milliseconds(1));
 
     // 生成一条从摄像机出发并穿过当前像素的世界空间射线。
     const Ray ray = m_camera.GetRay(x, y);
-    (void)ray;
+    Intersection intersection{};
+    if (m_sphere.Intersect(ray, intersection))
+    {
+        // 将法线分量从 [-1, 1] 映射到可显示的 [0, 1] 颜色范围。
+        return Color{
+            intersection.normal.x * 0.5f + 0.5f,
+            intersection.normal.y * 0.5f + 0.5f,
+            intersection.normal.z * 0.5f + 0.5f};
+    }
 
     return Color{
         static_cast<float>(x) / static_cast<float>(m_viewportWidth),

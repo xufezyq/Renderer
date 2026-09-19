@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Camera.h"
+#include "Sphere.h"
 
 #include <atomic>
 #include <cstddef>
@@ -27,6 +28,7 @@ private:
     void renderWorker();
 
     Camera m_camera;
+    Sphere m_sphere;
     unsigned m_viewportWidth;
     unsigned m_viewportHeight;
     std::vector<std::uint32_t> m_displayBuffer;

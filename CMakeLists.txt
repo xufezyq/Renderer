@@ -31,7 +31,35 @@ target_include_directories(FortuneRenderer PRIVATE
 add_subdirectory(minifb)
 
 target_link_libraries(FortuneRenderer PRIVATE minifb)
- 
+
+enable_testing()
+add_executable(SphereTests tests/SphereTests.cpp source/Sphere.cpp)
+target_include_directories(SphereTests PRIVATE
+    "${CMAKE_SOURCE_DIR}/source"
+    "${CMAKE_SOURCE_DIR}/glm"
+)
+if (MSVC)
+    target_compile_options(SphereTests PRIVATE /utf-8)
+endif()
+add_test(NAME SphereTests COMMAND SphereTests)
+
+add_executable(RendererTests
+    tests/RendererTests.cpp
+    source/Camera.cpp
+    source/Renderer.cpp
+    source/Sphere.cpp
+)
+target_include_directories(RendererTests PRIVATE
+    "${CMAKE_SOURCE_DIR}/source"
+    "${CMAKE_SOURCE_DIR}/glm"
+    "${CMAKE_SOURCE_DIR}/minifb/include"
+)
+target_link_libraries(RendererTests PRIVATE minifb)
+if (MSVC)
+    target_compile_options(RendererTests PRIVATE /utf-8)
+endif()
+add_test(NAME RendererTests COMMAND RendererTests)
+
 if (WIN32)
 
 # 链接库：

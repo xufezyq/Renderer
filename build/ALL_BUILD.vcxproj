@@ -178,6 +178,14 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <Project>{A98A0BC2-9BC1-3941-BC67-B58204B05932}</Project>
       <Name>FortuneRenderer</Name>
     </ProjectReference>
+    <ProjectReference Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\build\RendererTests.vcxproj">
+      <Project>{5D5A4ED7-0F86-3FF6-8BF1-7A3FD726953C}</Project>
+      <Name>RendererTests</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\build\SphereTests.vcxproj">
+      <Project>{5091584F-BA90-3F7A-8E85-3F35C6D00A3B}</Project>
+      <Name>SphereTests</Name>
+    </ProjectReference>
     <ProjectReference Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\build\minifb\fullscreen.vcxproj">
       <Project>{18607DF3-0EB7-3302-BBB4-E404D86E46AE}</Project>
       <Name>fullscreen</Name>

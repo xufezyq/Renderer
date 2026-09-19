@@ -11,9 +11,18 @@
 		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
 		<BuildDependency Project="minifb/minifb.vcxproj"/>
 	</Project>
+	<Project Path="RendererTests.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="5d5a4ed7-0f86-3ff6-8bf1-7a3fd726953c">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+		<BuildDependency Project="minifb/minifb.vcxproj"/>
+	</Project>
+	<Project Path="SphereTests.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="5091584f-ba90-3f7a-8e85-3f35c6d00a3b">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+	</Project>
 	<Folder Name="/CMakePredefinedTargets/">
 		<Project Path="ALL_BUILD.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="0b32b02c-892f-3e70-9206-e33a36501fac">
 			<BuildDependency Project="FortuneRenderer.vcxproj"/>
+			<BuildDependency Project="RendererTests.vcxproj"/>
+			<BuildDependency Project="SphereTests.vcxproj"/>
 			<BuildDependency Project="ZERO_CHECK.vcxproj"/>
 			<BuildDependency Project="minifb/fullscreen.vcxproj"/>
 			<BuildDependency Project="minifb/hide_cursor.vcxproj"/>
@@ -28,6 +37,13 @@
 		</Project>
 		<Project Path="INSTALL.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="2f8bf896-1c3c-37c5-8918-6fdafca4196c">
 			<BuildDependency Project="ALL_BUILD.vcxproj"/>
+			<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+			<Build Solution="Debug|*" Project="false"/>
+			<Build Solution="Release|*" Project="false"/>
+			<Build Solution="MinSizeRel|*" Project="false"/>
+			<Build Solution="RelWithDebInfo|*" Project="false"/>
+		</Project>
+		<Project Path="RUN_TESTS.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="131df35e-f49e-3c55-9cfb-c62b559476db">
 			<BuildDependency Project="ZERO_CHECK.vcxproj"/>
 			<Build Solution="Debug|*" Project="false"/>
 			<Build Solution="Release|*" Project="false"/>

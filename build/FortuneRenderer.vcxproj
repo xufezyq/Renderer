@@ -376,6 +376,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClCompile Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\source\Disk.cpp" />
     <ClInclude Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\source\Disk.h" />
     <ClInclude Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\source\Intersection.h" />
+    <ClInclude Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\source\Primitive.h" />
     <ClInclude Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\source\Ray.h" />
     <ClCompile Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\source\RenderTiming.cpp" />
     <ClInclude Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\source\RenderTiming.h" />

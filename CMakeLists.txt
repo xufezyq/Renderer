@@ -70,6 +70,16 @@ if (MSVC)
 endif()
 add_test(NAME RenderTimingTests COMMAND RenderTimingTests)
 
+add_executable(PrimitiveTests tests/PrimitiveTests.cpp)
+target_include_directories(PrimitiveTests PRIVATE
+    "${CMAKE_SOURCE_DIR}/source"
+    "${CMAKE_SOURCE_DIR}/glm"
+)
+if (MSVC)
+    target_compile_options(PrimitiveTests PRIVATE /utf-8)
+endif()
+add_test(NAME PrimitiveTests COMMAND PrimitiveTests)
+
 add_executable(RendererTests
     tests/RendererTests.cpp
     source/Camera.cpp

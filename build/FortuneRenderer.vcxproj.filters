@@ -33,6 +33,9 @@
     <ClInclude Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\source\Intersection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\source\Primitive.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\source\Ray.h">
       <Filter>Header Files</Filter>
     </ClInclude>

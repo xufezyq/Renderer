@@ -1,11 +1,12 @@
 #pragma once
 
 #include "Intersection.h"
+#include "Primitive.h"
 #include "Ray.h"
 
 #include <glm/glm.hpp>
 
-class Triangle
+class Triangle final : public Primitive
 {
 public:
     Triangle(
@@ -14,7 +15,7 @@ public:
         const glm::vec3& vertex2);
 
     // 使用 Moller-Trumbore 算法进行双面射线求交。
-    bool Intersect(const Ray& ray, Intersection& intersection) const;
+    bool Intersect(const Ray& ray, Intersection& intersection) const override;
 
 private:
     glm::vec3 m_vertex0;

@@ -2,6 +2,7 @@
 
 #include "Camera.h"
 #include "Disk.h"
+#include "Primitive.h"
 #include "Sphere.h"
 #include "Triangle.h"
 
@@ -9,6 +10,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <mutex>
+#include <memory>
 #include <thread>
 #include <vector>
 
@@ -35,9 +37,7 @@ private:
     void renderWorker();
 
     Camera m_camera;
-    Sphere m_sphere;
-    Disk m_disk;
-    Triangle m_triangle;
+    std::vector<std::unique_ptr<Primitive>> m_primitives;
     bool m_enableSsaa;
     unsigned m_samplesPerAxis;
     unsigned m_viewportWidth;

@@ -30,12 +30,7 @@ Renderer::Renderer(
     unsigned height,
     bool enable_ssaa,
     unsigned samples_per_axis)
-    : m_sphere(glm::vec3(0.0f, 0.0f, 3.0f), 0.7f),
-      m_disk(glm::vec3(1.55f, 0.0f, 3.0f), 0.7f),
-      m_triangle(
-          glm::vec3(-2.25f, -0.7f, 3.0f),
-          glm::vec3(-0.85f, -0.7f, 3.0f),
-          glm::vec3(-1.55f, 0.7f, 3.0f)),
+    : m_primitives(),
       m_enableSsaa(enable_ssaa),
       m_samplesPerAxis(samples_per_axis),
       m_viewportWidth(width),
@@ -47,6 +42,14 @@ Renderer::Renderer(
         throw std::invalid_argument("Renderer dimensions must be greater than zero");
     if (samples_per_axis == 0)
         throw std::invalid_argument("SSAA samples per axis must be greater than zero");
+
+    m_primitives.reserve(3);
+    m_primitives.emplace_back(std::make_unique<Sphere>(glm::vec3(0.0f, 0.0f, 3.0f), 0.7f));
+    m_primitives.emplace_back(std::make_unique<Disk>(glm::vec3(1.55f, 0.0f, 3.0f), 0.7f));
+    m_primitives.emplace_back(std::make_unique<Triangle>(
+        glm::vec3(-2.25f, -0.7f, 3.0f),
+        glm::vec3(-0.85f, -0.7f, 3.0f),
+        glm::vec3(-1.55f, 0.7f, 3.0f)));
 
     // 左手坐标系中，相机位于原点并朝向 +Z。
     m_camera.Initialize(
@@ -102,28 +105,28 @@ Color Renderer::renderSample(float x, float y) const
     Color closest_color{};
     bool has_hit = false;
 
-    if (m_sphere.Intersect(ray, candidate))
+    for (const std::unique_ptr<Primitive>& primitive : m_primitives)
     {
-        // 将法线分量从 [-1, 1] 映射到可显示的 [0, 1] 颜色范围。
-        closest_t = candidate.t;
-        closest_color = Color{
-            candidate.normal.x * 0.5f + 0.5f,
-            candidate.normal.y * 0.5f + 0.5f,
-            candidate.normal.z * 0.5f + 0.5f};
-        has_hit = true;
-    }
+        if (!primitive->Intersect(ray, candidate) || candidate.t >= closest_t)
+            continue;
 
-    if (m_disk.Intersect(ray, candidate) && candidate.t < closest_t)
-    {
         closest_t = candidate.t;
-        closest_color = Color{1.0f, 1.0f, 0.0f};
-        has_hit = true;
-    }
-
-    if (m_triangle.Intersect(ray, candidate) && candidate.t < closest_t)
-    {
-        closest_t = candidate.t;
-        closest_color = Color{0.0f, 1.0f, 1.0f};
+        if (dynamic_cast<const Sphere*>(primitive.get()) != nullptr)
+        {
+            // 将法线分量从 [-1, 1] 映射到可显示的 [0, 1] 颜色范围。
+            closest_color = Color{
+                candidate.normal.x * 0.5f + 0.5f,
+                candidate.normal.y * 0.5f + 0.5f,
+                candidate.normal.z * 0.5f + 0.5f};
+        }
+        else if (dynamic_cast<const Disk*>(primitive.get()) != nullptr)
+        {
+            closest_color = Color{1.0f, 1.0f, 0.0f};
+        }
+        else
+        {
+            closest_color = Color{0.0f, 1.0f, 1.0f};
+        }
         has_hit = true;
     }
 

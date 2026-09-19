@@ -182,6 +182,10 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <Project>{A98A0BC2-9BC1-3941-BC67-B58204B05932}</Project>
       <Name>FortuneRenderer</Name>
     </ProjectReference>
+    <ProjectReference Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\build\PrimitiveTests.vcxproj">
+      <Project>{85C50D7A-89DB-3384-9584-6817958E6EAD}</Project>
+      <Name>PrimitiveTests</Name>
+    </ProjectReference>
     <ProjectReference Include="D:\Vulkan\Engine-Rendering-Optimization-Study\Render\Renderer\build\RenderTimingTests.vcxproj">
       <Project>{F9570764-8FBD-38E7-BAFA-1D17D36CEF21}</Project>
       <Name>RenderTimingTests</Name>

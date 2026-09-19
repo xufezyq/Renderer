@@ -8,7 +8,7 @@ int main(int argc, char* argv[])
     unsigned width = 800;
     unsigned height = 450;
     constexpr bool enable_ssaa = true;
-    constexpr unsigned ssaa_samples_per_axis = 16;
+    constexpr unsigned ssaa_samples_per_axis = 2;
 
     try
     {

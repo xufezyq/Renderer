@@ -14,6 +14,9 @@
 		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
 		<BuildDependency Project="minifb/minifb.vcxproj"/>
 	</Project>
+	<Project Path="PrimitiveTests.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="85c50d7a-89db-3384-9584-6817958e6ead">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+	</Project>
 	<Project Path="RenderTimingTests.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="f9570764-8fbd-38e7-bafa-1d17d36cef21">
 		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
 	</Project>
@@ -31,6 +34,7 @@
 		<Project Path="ALL_BUILD.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="0b32b02c-892f-3e70-9206-e33a36501fac">
 			<BuildDependency Project="DiskTests.vcxproj"/>
 			<BuildDependency Project="FortuneRenderer.vcxproj"/>
+			<BuildDependency Project="PrimitiveTests.vcxproj"/>
 			<BuildDependency Project="RenderTimingTests.vcxproj"/>
 			<BuildDependency Project="RendererTests.vcxproj"/>
 			<BuildDependency Project="SphereTests.vcxproj"/>

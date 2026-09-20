@@ -1,8 +1,5 @@
 #include "Renderer.h"
-#include "Disk.h"
 #include "RenderTiming.h"
-#include "Sphere.h"
-#include "Triangle.h"
 
 #include <algorithm>
 #include <chrono>
@@ -22,9 +19,18 @@ namespace
     std::uint32_t PackColor(const Color& color)
     {
         return (0xFFu << 24) |
-               (static_cast<std::uint32_t>(ToByte(color.b)) << 16) |
+               (static_cast<std::uint32_t>(ToByte(color.r)) << 16) |
                (static_cast<std::uint32_t>(ToByte(color.g)) << 8) |
-               static_cast<std::uint32_t>(ToByte(color.r));
+               static_cast<std::uint32_t>(ToByte(color.b));
+    }
+
+    Color NormalToColor(const glm::vec3& normal)
+    {
+        // Map a world-space normal from [-1, 1] to the displayable [0, 1] range.
+        return Color{
+            normal.x * 0.5f + 0.5f,
+            normal.y * 0.5f + 0.5f,
+            normal.z * 0.5f + 0.5f};
     }
 }
 
@@ -49,12 +55,12 @@ Renderer::Renderer(
 
     m_scene.LoadSceneFromXML(scene_file_path);
 
-    // 左手坐标系中，相机位于原点并朝向 +Z。
+    const SceneCameraSettings& camera_settings = m_scene.GetCameraSettings();
     m_camera.Initialize(
-        glm::vec3(0.0f),
-        glm::vec3(0.0f, 0.0f, 1.0f),
-        glm::vec3(0.0f, 1.0f, 0.0f),
-        60.0f,
+        camera_settings.position,
+        camera_settings.forward,
+        camera_settings.up,
+        camera_settings.verticalFov,
         0.1f,
         1000.0f,
         width,
@@ -100,25 +106,9 @@ Color Renderer::renderSample(float x, float y) const
     const Ray ray = m_camera.GetRay(x, y);
     Intersection intersection{};
     if (m_scene.Intersect(ray, intersection))
-    {
-        if (dynamic_cast<const Sphere*>(intersection.primitive) != nullptr)
-        {
-            // 将法线分量从 [-1, 1] 映射到可显示的 [0, 1] 颜色范围。
-            return Color{
-                intersection.normal.x * 0.5f + 0.5f,
-                intersection.normal.y * 0.5f + 0.5f,
-                intersection.normal.z * 0.5f + 0.5f};
-        }
-        if (dynamic_cast<const Disk*>(intersection.primitive) != nullptr)
-            return Color{1.0f, 1.0f, 0.0f};
+        return NormalToColor(intersection.normal);
 
-        return Color{0.0f, 1.0f, 1.0f};
-    }
-
-    return Color{
-        x / static_cast<float>(m_viewportWidth),
-        y / static_cast<float>(m_viewportHeight),
-        0.0f};
+    return Color{0.0f, 0.0f, 0.0f};
 }
 
 void Renderer::renderWorker()

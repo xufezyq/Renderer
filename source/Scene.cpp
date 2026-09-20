@@ -291,6 +291,21 @@ void Scene::LoadSceneFromXML(const std::string& file_path)
         throw std::runtime_error("Scene XML root element must be 'scene'");
 
     Scene loaded_scene;
+    if (root.attributes.find("camera_position") != root.attributes.end() ||
+        root.attributes.find("camera_forward") != root.attributes.end() ||
+        root.attributes.find("camera_up") != root.attributes.end() ||
+        root.attributes.find("camera_fov") != root.attributes.end())
+    {
+        loaded_scene.m_cameraSettings.position =
+            ParseVectorAttribute(root, "camera_position");
+        loaded_scene.m_cameraSettings.forward =
+            ParseVectorAttribute(root, "camera_forward");
+        loaded_scene.m_cameraSettings.up =
+            ParseVectorAttribute(root, "camera_up");
+        loaded_scene.m_cameraSettings.verticalFov =
+            ParseFloatAttribute(root, "camera_fov");
+    }
+
     for (const XmlElement& object_element : root.children)
     {
         if (object_element.name != "object")
@@ -333,6 +348,12 @@ void Scene::LoadSceneFromXML(const std::string& file_path)
     }
 
     m_sceneObjects.swap(loaded_scene.m_sceneObjects);
+    m_cameraSettings = loaded_scene.m_cameraSettings;
+}
+
+const SceneCameraSettings& Scene::GetCameraSettings() const
+{
+    return m_cameraSettings;
 }
 
 SceneObject* Scene::CreateSceneObject(

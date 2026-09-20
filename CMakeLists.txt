@@ -13,6 +13,8 @@ file(GLOB_RECURSE APP_SOURCES CONFIGURE_DEPENDS
 
 set(SCENE_FILE "${CMAKE_SOURCE_DIR}/scene.xml")
 set(CORNELL_SCENE_FILE "${CMAKE_SOURCE_DIR}/cornell_box.xml")
+set(DUST2_SCENE_FILE "${CMAKE_SOURCE_DIR}/dust2.xml")
+set(DUST2_MODEL_SCENE_FILE "${CMAKE_SOURCE_DIR}/dust2_model.xml")
 configure_file(
     "${SCENE_FILE}"
     "${CMAKE_CURRENT_BINARY_DIR}/scene.xml"
@@ -21,11 +23,21 @@ configure_file(
     "${CORNELL_SCENE_FILE}"
     "${CMAKE_CURRENT_BINARY_DIR}/cornell_box.xml"
     COPYONLY)
+configure_file(
+    "${DUST2_SCENE_FILE}"
+    "${CMAKE_CURRENT_BINARY_DIR}/dust2.xml"
+    COPYONLY)
+configure_file(
+    "${DUST2_MODEL_SCENE_FILE}"
+    "${CMAKE_CURRENT_BINARY_DIR}/dust2_model.xml"
+    COPYONLY)
 
 add_executable(FortuneRenderer ${APP_SOURCES})
 target_sources(FortuneRenderer PRIVATE
     "${SCENE_FILE}"
-    "${CORNELL_SCENE_FILE}")
+    "${CORNELL_SCENE_FILE}"
+    "${DUST2_SCENE_FILE}"
+    "${DUST2_MODEL_SCENE_FILE}")
 set_property(DIRECTORY PROPERTY VS_STARTUP_PROJECT FortuneRenderer)
 
 # Keep symbols available when debugging the Release configuration in Visual Studio.
@@ -140,7 +152,13 @@ foreach(target FortuneRenderer SceneTests RendererTests)
             "$<TARGET_FILE_DIR:${target}>/scene.xml"
         COMMAND ${CMAKE_COMMAND} -E copy_if_different
             "${CMAKE_CURRENT_BINARY_DIR}/cornell_box.xml"
-            "$<TARGET_FILE_DIR:${target}>/cornell_box.xml")
+            "$<TARGET_FILE_DIR:${target}>/cornell_box.xml"
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            "${CMAKE_CURRENT_BINARY_DIR}/dust2.xml"
+            "$<TARGET_FILE_DIR:${target}>/dust2.xml"
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            "${CMAKE_CURRENT_BINARY_DIR}/dust2_model.xml"
+            "$<TARGET_FILE_DIR:${target}>/dust2_model.xml")
 endforeach()
 
 if (WIN32)

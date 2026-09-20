@@ -1,5 +1,6 @@
 #include "Renderer.h"
 
+#include <iostream>
 #include <stdexcept>
 #include <string>
 
@@ -7,7 +8,7 @@ int main(int argc, char* argv[])
 {
     unsigned width = 800;
     unsigned height = 450;
-    std::string scene_file_path = "cornell_box.xml";
+    std::string scene_file_path = "dust2_model.xml";
     constexpr bool enable_ssaa = true;
     constexpr unsigned ssaa_samples_per_axis = 2;
 
@@ -37,8 +38,9 @@ int main(int argc, char* argv[])
             scene_file_path);
         return renderer.run();
     }
-    catch (const std::exception&)
+    catch (const std::exception& exception)
     {
+        std::cerr << exception.what() << '\n';
         return 1;
     }
 }

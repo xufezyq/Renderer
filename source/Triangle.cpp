@@ -8,10 +8,7 @@ namespace
     constexpr float intersection_epsilon = 1.0e-6f;
 }
 
-Triangle::Triangle(
-    const glm::vec3& vertex0,
-    const glm::vec3& vertex1,
-    const glm::vec3& vertex2)
+Triangle::Triangle(const glm::vec3& vertex0, const glm::vec3& vertex1, const glm::vec3& vertex2)
     : m_vertex0(vertex0),
       m_vertex1(vertex1),
       m_vertex2(vertex2),

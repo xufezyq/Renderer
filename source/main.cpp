@@ -8,8 +8,8 @@ int main(int argc, char* argv[])
 {
     unsigned width = 800;
     unsigned height = 450;
-    std::string scene_file_path = "dust2_model.xml";
-    constexpr bool enable_ssaa = true;
+    std::string scene_file_path = "cornell_box.xml";
+    constexpr bool enable_ssaa = false;
     constexpr unsigned ssaa_samples_per_axis = 2;
 
     try
@@ -30,12 +30,7 @@ int main(int argc, char* argv[])
             return 1;
         }
 
-        Renderer renderer(
-            width,
-            height,
-            enable_ssaa,
-            ssaa_samples_per_axis,
-            scene_file_path);
+        Renderer renderer(width, height, enable_ssaa, ssaa_samples_per_axis, scene_file_path);
         return renderer.run();
     }
     catch (const std::exception& exception)

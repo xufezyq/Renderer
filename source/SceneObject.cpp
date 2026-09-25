@@ -7,10 +7,7 @@
 
 namespace
 {
-    glm::mat4 MakeObjectToWorld(
-        const glm::vec3& position,
-        const glm::vec3& euler,
-        float scale)
+    glm::mat4 MakeObjectToWorld(const glm::vec3& position, const glm::vec3& euler, float scale)
     {
         if (!std::isfinite(scale) || scale <= 0.0f)
             throw std::invalid_argument("SceneObject scale must be finite and greater than zero");
@@ -23,19 +20,14 @@ namespace
     }
 }
 
-SceneObject::SceneObject(
-    const glm::vec3& position,
-    const glm::vec3& euler,
-    float scale)
+SceneObject::SceneObject(const glm::vec3& position, const glm::vec3& euler, float scale)
     : m_objectToWorld(MakeObjectToWorld(position, euler, scale)),
       m_worldToObject(glm::inverse(m_objectToWorld))
 {}
 
 SceneObject::~SceneObject() = default;
 
-bool SceneObject::Intersect(
-    const Ray& world_ray,
-    Intersection& intersection) const
+bool SceneObject::Intersect(const Ray& world_ray, Intersection& intersection) const
 {
     const Ray local_ray = m_worldToObject * world_ray;
     Intersection closest_intersection{};
@@ -59,8 +51,7 @@ bool SceneObject::Intersect(
 
     const glm::mat3 normal_matrix = glm::transpose(glm::mat3(m_worldToObject));
     intersection = closest_intersection;
-    intersection.position = glm::vec3(
-        m_objectToWorld * glm::vec4(closest_intersection.position, 1.0f));
+    intersection.position = glm::vec3(m_objectToWorld * glm::vec4(closest_intersection.position, 1.0f));
     intersection.normal = glm::normalize(normal_matrix * closest_intersection.normal);
     return true;
 }

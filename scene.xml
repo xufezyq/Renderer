@@ -1,13 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Scene objects use world-space position/euler/scale and local-space primitives. -->
-<scene>
-    <object position="0 0 3" euler="0 0 0" scale="1">
-        <sphere radius="0.7" />
-    </object>
-    <object position="1.55 0 3" euler="0 0 0" scale="1">
-        <disk radius="0.7" />
-    </object>
-    <object position="-1.55 0 3" euler="0 0 0" scale="1">
-        <triangle v0="-0.7 -0.7 0" v1="0.7 -0.7 0" v2="0 0.7 0" />
-    </object>
+<!-- 物体的位置使用世界坐标，图元顶点使用物体局部坐标。 -->
+<scene version="2">
+    <camera position="0 0 0" forward="0 0 1" fov="60" />
+
+    <lights>
+        <directional direction="0 -1 0" radiance="2 2 2" />
+        <point
+            position="0 2 1"
+            intensity="4 2 1"
+            constant="1"
+            linear="0.5"
+            quadratic="0.25" />
+        <spot
+            direction="0 0 1"
+            position="0 0 0"
+            intensity="3 3 3"
+            inner_angle="20"
+            outer_angle="40"
+            constant="1"
+            linear="0.2"
+            quadratic="0.1" />
+    </lights>
+
+    <objects>
+        <object position="0 0 3">
+            <sphere radius="0.7" />
+        </object>
+        <object position="1.55 0 3">
+            <disk radius="0.7" />
+        </object>
+        <object position="-1.55 0 3">
+            <triangle v0="-0.7 -0.7 0" v1="0.7 -0.7 0" v2="0 0.7 0" />
+        </object>
+    </objects>
 </scene>

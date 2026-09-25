@@ -12,19 +12,14 @@
 class SceneObject
 {
 public:
-    SceneObject(
-        const glm::vec3& position,
-        const glm::vec3& euler,
-        float scale);
+    SceneObject(const glm::vec3& position, const glm::vec3& euler, float scale);
 
     ~SceneObject();
 
     template <typename T, typename... Args>
     T* CreatePrimitive(Args&&... args)
     {
-        static_assert(
-            std::is_base_of_v<Primitive, T>,
-            "T must derive from Primitive");
+        static_assert(std::is_base_of_v<Primitive, T>, "T must derive from Primitive");
 
         auto primitive = std::make_unique<T>(std::forward<Args>(args)...);
         T* primitive_pointer = primitive.get();
@@ -33,9 +28,7 @@ public:
         return primitive_pointer;
     }
 
-    bool Intersect(
-        const Ray& world_ray,
-        Intersection& intersection) const;
+    bool Intersect(const Ray& world_ray, Intersection& intersection) const;
 
 private:
     glm::mat4 m_objectToWorld;

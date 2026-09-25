@@ -15,9 +15,7 @@ public:
         return m_sceneObject;
     }
 
-    virtual bool Intersect(
-        const Ray& ray,
-        Intersection& intersection) const = 0;
+    virtual bool Intersect(const Ray& ray, Intersection& intersection) const = 0;
 
 private:
     friend class SceneObject;

@@ -21,10 +21,7 @@ namespace
 
 int main()
 {
-    const Triangle triangle(
-        glm::vec3(0.0f, 0.0f, 0.0f),
-        glm::vec3(1.0f, 0.0f, 0.0f),
-        glm::vec3(0.0f, 1.0f, 0.0f));
+    const Triangle triangle(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
     Intersection intersection{};
     const Ray front_ray{glm::vec3(0.25f, 0.25f, -1.0f), glm::vec3(0.0f, 0.0f, 1.0f)};
@@ -50,10 +47,7 @@ int main()
     bool rejected_degenerate_triangle = false;
     try
     {
-        const Triangle degenerate(
-            glm::vec3(0.0f),
-            glm::vec3(1.0f, 0.0f, 0.0f),
-            glm::vec3(2.0f, 0.0f, 0.0f));
+        const Triangle degenerate(glm::vec3(0.0f), glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(2.0f, 0.0f, 0.0f));
         (void)degenerate;
     }
     catch (const std::invalid_argument&)

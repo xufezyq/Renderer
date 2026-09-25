@@ -54,9 +54,7 @@ namespace
 
         void Fail(const std::string& message) const
         {
-            throw std::runtime_error(
-                "XML parse error at offset " +
-                std::to_string(m_position) + ": " + message);
+            throw std::runtime_error("XML parse error at offset " + std::to_string(m_position) + ": " + message);
         }
 
         void Expect(char expected)
@@ -162,9 +160,7 @@ namespace
                 }
 
                 const std::string attribute_name = ParseName();
-                if (!element.attributes.emplace(
-                        attribute_name,
-                        std::string{}).second)
+                if (!element.attributes.emplace(attribute_name, std::string{}).second)
                 {
                     Fail("duplicate attribute '" + attribute_name + "'");
                 }
@@ -212,22 +208,17 @@ namespace
         std::size_t m_position = 0;
     };
 
-    const std::string& RequireAttribute(
-        const XmlElement& element,
-        const std::string& name)
+    const std::string& RequireAttribute(const XmlElement& element, const std::string& name)
     {
         const auto iterator = element.attributes.find(name);
         if (iterator == element.attributes.end())
         {
-            throw std::runtime_error(
-                "Element '" + element.name + "' is missing attribute '" + name + "'");
+            throw std::runtime_error("Element '" + element.name + "' is missing attribute '" + name + "'");
         }
         return iterator->second;
     }
 
-    float ParseFloatAttribute(
-        const XmlElement& element,
-        const std::string& name)
+    float ParseFloatAttribute(const XmlElement& element, const std::string& name)
     {
         const std::string& value = RequireAttribute(element, name);
         std::size_t parsed_length = 0;
@@ -238,41 +229,125 @@ namespace
         }
         catch (const std::exception&)
         {
-            throw std::runtime_error(
-                "Element '" + element.name + "' has an invalid float attribute '" + name + "'");
+            throw std::runtime_error("Element '" + element.name + "' has an invalid float attribute '" + name + "'");
         }
 
         if (parsed_length != value.size() || !std::isfinite(result))
         {
-            throw std::runtime_error(
-                "Element '" + element.name + "' has an invalid float attribute '" + name + "'");
+            throw std::runtime_error("Element '" + element.name + "' has an invalid float attribute '" + name + "'");
         }
         return result;
     }
 
-    glm::vec3 ParseVectorAttribute(
-        const XmlElement& element,
-        const std::string& name)
+    glm::vec3 ParseVectorAttribute(const XmlElement& element, const std::string& name)
     {
         const std::string& value = RequireAttribute(element, name);
         std::istringstream stream(value);
         glm::vec3 result;
         if (!(stream >> result.x >> result.y >> result.z))
         {
-            throw std::runtime_error(
-                "Element '" + element.name + "' has an invalid vec3 attribute '" + name + "'");
+            throw std::runtime_error("Element '" + element.name + "' has an invalid vec3 attribute '" + name + "'");
         }
 
         std::string extra_value;
-        if (stream >> extra_value ||
-            !std::isfinite(result.x) ||
-            !std::isfinite(result.y) ||
-            !std::isfinite(result.z))
+        if (stream >> extra_value || !std::isfinite(result.x) || !std::isfinite(result.y) || !std::isfinite(result.z))
         {
-            throw std::runtime_error(
-                "Element '" + element.name + "' has an invalid vec3 attribute '" + name + "'");
+            throw std::runtime_error("Element '" + element.name + "' has an invalid vec3 attribute '" + name + "'");
         }
         return result;
+    }
+
+    Color ParseColorAttribute(const XmlElement& element, const std::string& name)
+    {
+        const glm::vec3 value = ParseVectorAttribute(element, name);
+        return Color{value.x, value.y, value.z};
+    }
+
+    bool HasAttribute(const XmlElement& element, const std::string& name)
+    {
+        return element.attributes.find(name) != element.attributes.end();
+    }
+
+    float ParseOptionalFloatAttribute(const XmlElement& element, const std::string& name, float default_value)
+    {
+        return HasAttribute(element, name) ? ParseFloatAttribute(element, name) : default_value;
+    }
+
+    glm::vec3 ParseOptionalVectorAttribute(const XmlElement& element, const std::string& name, const glm::vec3& default_value)
+    {
+        return HasAttribute(element, name) ? ParseVectorAttribute(element, name) : default_value;
+    }
+
+    glm::vec3 ParseAttenuations(const XmlElement& element)
+    {
+        if (HasAttribute(element, "attenuations"))
+            return ParseVectorAttribute(element, "attenuations");
+        return glm::vec3(
+            ParseFloatAttribute(element, "quadratic"),
+            ParseFloatAttribute(element, "linear"),
+            ParseFloatAttribute(element, "constant"));
+    }
+
+    void LoadLight(Scene& scene, const XmlElement& element)
+    {
+        if (!element.children.empty())
+            throw std::runtime_error("Light element must not contain children");
+
+        if (element.name == "directional" || element.name == "directional_light")
+        {
+            scene.CreateLight<DirectionalLight>(
+                ParseVectorAttribute(element, "direction"),
+                ParseColorAttribute(element, "radiance"));
+        }
+        else if (element.name == "point" || element.name == "point_light")
+        {
+            scene.CreateLight<PointLight>(
+                ParseVectorAttribute(element, "position"),
+                ParseColorAttribute(element, "intensity"),
+                ParseAttenuations(element));
+        }
+        else if (element.name == "spot" || element.name == "spot_light")
+        {
+            scene.CreateLight<SpotLight>(
+                ParseVectorAttribute(element, "direction"),
+                ParseVectorAttribute(element, "position"),
+                ParseColorAttribute(element, "intensity"),
+                ParseFloatAttribute(element, "inner_angle"),
+                ParseFloatAttribute(element, "outer_angle"),
+                ParseAttenuations(element));
+        }
+        else
+        {
+            throw std::runtime_error("Unknown light element: '" + element.name + "'");
+        }
+    }
+
+    void LoadObject(Scene& scene, const XmlElement& element)
+    {
+        if (element.name != "object")
+            throw std::runtime_error("Unknown object element: '" + element.name + "'");
+
+        SceneObject* object = scene.CreateSceneObject(
+            ParseOptionalVectorAttribute(element, "position", glm::vec3(0.0f)),
+            ParseOptionalVectorAttribute(element, "euler", glm::vec3(0.0f)),
+            ParseOptionalFloatAttribute(element, "scale", 1.0f));
+        if (element.children.empty())
+            throw std::runtime_error("Scene object must contain at least one primitive");
+
+        for (const XmlElement& primitive_element : element.children)
+        {
+            if (primitive_element.name == "sphere")
+                object->CreatePrimitive<Sphere>(ParseFloatAttribute(primitive_element, "radius"));
+            else if (primitive_element.name == "disk")
+                object->CreatePrimitive<Disk>(ParseFloatAttribute(primitive_element, "radius"));
+            else if (primitive_element.name == "triangle")
+                object->CreatePrimitive<Triangle>(
+                    ParseVectorAttribute(primitive_element, "v0"),
+                    ParseVectorAttribute(primitive_element, "v1"),
+                    ParseVectorAttribute(primitive_element, "v2"));
+            else
+                throw std::runtime_error("Unknown primitive element: '" + primitive_element.name + "'");
+        }
     }
 }
 
@@ -289,65 +364,65 @@ void Scene::LoadSceneFromXML(const std::string& file_path)
     const XmlElement root = XmlParser(contents.str()).Parse();
     if (root.name != "scene")
         throw std::runtime_error("Scene XML root element must be 'scene'");
+    if (HasAttribute(root, "version") && RequireAttribute(root, "version") != "2")
+        throw std::runtime_error("Unsupported scene XML version");
 
     Scene loaded_scene;
-    if (root.attributes.find("camera_position") != root.attributes.end() ||
-        root.attributes.find("camera_forward") != root.attributes.end() ||
-        root.attributes.find("camera_up") != root.attributes.end() ||
-        root.attributes.find("camera_fov") != root.attributes.end())
+    const bool has_legacy_camera = HasAttribute(root, "camera_position") ||
+                                   HasAttribute(root, "camera_forward") ||
+                                   HasAttribute(root, "camera_up") ||
+                                   HasAttribute(root, "camera_fov");
+    if (has_legacy_camera)
     {
-        loaded_scene.m_cameraSettings.position =
-            ParseVectorAttribute(root, "camera_position");
-        loaded_scene.m_cameraSettings.forward =
-            ParseVectorAttribute(root, "camera_forward");
-        loaded_scene.m_cameraSettings.up =
-            ParseVectorAttribute(root, "camera_up");
-        loaded_scene.m_cameraSettings.verticalFov =
-            ParseFloatAttribute(root, "camera_fov");
+        loaded_scene.m_cameraSettings.position = ParseVectorAttribute(root, "camera_position");
+        loaded_scene.m_cameraSettings.forward = ParseVectorAttribute(root, "camera_forward");
+        loaded_scene.m_cameraSettings.up = ParseVectorAttribute(root, "camera_up");
+        loaded_scene.m_cameraSettings.verticalFov = ParseFloatAttribute(root, "camera_fov");
     }
 
-    for (const XmlElement& object_element : root.children)
+    bool has_camera_element = false;
+    bool has_lights_element = false;
+    bool has_objects_element = false;
+    for (const XmlElement& element : root.children)
     {
-        if (object_element.name != "object")
-            throw std::runtime_error(
-                "Scene element must contain only 'object' children");
-
-        SceneObject* object = loaded_scene.CreateSceneObject(
-            ParseVectorAttribute(object_element, "position"),
-            ParseVectorAttribute(object_element, "euler"),
-            ParseFloatAttribute(object_element, "scale"));
-
-        if (object_element.children.empty())
-            throw std::runtime_error("Scene object must contain at least one primitive");
-
-        for (const XmlElement& primitive_element : object_element.children)
+        if (element.name == "camera")
         {
-            if (primitive_element.name == "sphere")
-            {
-                object->CreatePrimitive<Sphere>(
-                    ParseFloatAttribute(primitive_element, "radius"));
-            }
-            else if (primitive_element.name == "disk")
-            {
-                object->CreatePrimitive<Disk>(
-                    ParseFloatAttribute(primitive_element, "radius"));
-            }
-            else if (primitive_element.name == "triangle")
-            {
-                object->CreatePrimitive<Triangle>(
-                    ParseVectorAttribute(primitive_element, "v0"),
-                    ParseVectorAttribute(primitive_element, "v1"),
-                    ParseVectorAttribute(primitive_element, "v2"));
-            }
-            else
-            {
-                throw std::runtime_error(
-                    "Unknown primitive element: '" + primitive_element.name + "'");
-            }
+            if (has_legacy_camera || has_camera_element || !element.children.empty())
+                throw std::runtime_error("Scene must contain one empty camera element");
+            has_camera_element = true;
+            loaded_scene.m_cameraSettings.position = ParseOptionalVectorAttribute(element, "position", loaded_scene.m_cameraSettings.position);
+            loaded_scene.m_cameraSettings.forward = ParseOptionalVectorAttribute(element, "forward", loaded_scene.m_cameraSettings.forward);
+            loaded_scene.m_cameraSettings.up = ParseOptionalVectorAttribute(element, "up", loaded_scene.m_cameraSettings.up);
+            loaded_scene.m_cameraSettings.verticalFov = ParseOptionalFloatAttribute(element, "fov", loaded_scene.m_cameraSettings.verticalFov);
         }
+        else if (element.name == "lights")
+        {
+            if (has_lights_element)
+                throw std::runtime_error("Scene must contain at most one lights element");
+            has_lights_element = true;
+            for (const XmlElement& light_element : element.children)
+                LoadLight(loaded_scene, light_element);
+        }
+        else if (element.name == "objects")
+        {
+            if (has_objects_element)
+                throw std::runtime_error("Scene must contain at most one objects element");
+            has_objects_element = true;
+            for (const XmlElement& object_element : element.children)
+                LoadObject(loaded_scene, object_element);
+        }
+        else if (element.name == "directional_light" || element.name == "point_light" || element.name == "spot_light")
+        {
+            LoadLight(loaded_scene, element);
+        }
+        else if (element.name == "object")
+            LoadObject(loaded_scene, element);
+        else
+            throw std::runtime_error("Unknown scene element: '" + element.name + "'");
     }
 
     m_sceneObjects.swap(loaded_scene.m_sceneObjects);
+    m_lights.swap(loaded_scene.m_lights);
     m_cameraSettings = loaded_scene.m_cameraSettings;
 }
 
@@ -356,10 +431,12 @@ const SceneCameraSettings& Scene::GetCameraSettings() const
     return m_cameraSettings;
 }
 
-SceneObject* Scene::CreateSceneObject(
-    const glm::vec3& position,
-    const glm::vec3& euler,
-    float scale)
+const std::vector<std::unique_ptr<Light>>& Scene::GetLights() const
+{
+    return m_lights;
+}
+
+SceneObject* Scene::CreateSceneObject(const glm::vec3& position, const glm::vec3& euler, float scale)
 {
     auto object = std::make_unique<SceneObject>(position, euler, scale);
     SceneObject* object_pointer = object.get();
@@ -367,9 +444,7 @@ SceneObject* Scene::CreateSceneObject(
     return object_pointer;
 }
 
-bool Scene::Intersect(
-    const Ray& ray,
-    Intersection& intersection) const
+bool Scene::Intersect(const Ray& ray, Intersection& intersection) const
 {
     float closest_t = ray.maxT;
     bool has_hit = false;

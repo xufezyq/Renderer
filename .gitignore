@@ -1,7 +1,10 @@
 /build
+/build-vs2026
 /resources/_Generated_/*
 *.bak
 /.vscode
 /.idea
 /cmake-build-debug
+/tests/
+/Comparison/tests/
 

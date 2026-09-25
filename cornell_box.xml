@@ -1,38 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-    Cornell box for the current camera convention:
-    camera at (0, 0, 0), looking toward +Z.
-    The whole scene is translated 0.2 units along +Y and 0.5 units along +Z.
--->
-<scene>
-    <!-- Box shell: floor, ceiling, back, left wall and right wall. -->
-    <object position="0 0.2 0.5" euler="0 0 0" scale="0.6">
-        <!-- Floor, y = -2.5. -->
-        <triangle v0="-3 -2.5 3" v1="3 -2.5 9" v2="3 -2.5 3" />
-        <triangle v0="-3 -2.5 3" v1="-3 -2.5 9" v2="3 -2.5 9" />
+<!-- 相机位于原点，朝 +Z 方向观察；盒体整体沿 +Y 移动 0.2、沿 +Z 移动 0.5。 -->
+<scene version="2">
+    <camera position="0 0 0" forward="0 0 1" fov="60" />
 
-        <!-- Ceiling, y = 2.5. -->
-        <triangle v0="-3 2.5 3" v1="3 2.5 3" v2="3 2.5 9" />
-        <triangle v0="-3 2.5 3" v1="3 2.5 9" v2="-3 2.5 9" />
+    <lights>
+        <!-- 点光源位于天花板附近。 -->
+        <point
+            position="0 1.2 4.1"
+            intensity="0.3 0.3 1.2"
+            constant="1"
+            linear="0"
+            quadratic="0" />
+        <!-- 暖色聚光灯从左上角斜向右下方，光束略偏向两球之间。 -->
+        <spot
+            direction="1.4 -1.9 0"
+            position="-1.5 1.5 4.6"
+            intensity="2 1.4 0.8"
+            inner_angle="10"
+            outer_angle="60"
+            constant="1"
+            linear="0.1"
+            quadratic="0.05" />
+    </lights>
 
-        <!-- Back wall, z = 9. -->
-        <triangle v0="-3 -2.5 9" v1="3 2.5 9" v2="3 -2.5 9" />
-        <triangle v0="-3 -2.5 9" v1="-3 2.5 9" v2="3 2.5 9" />
+    <objects>
+        <!-- 地面、天花板、后墙、左墙和右墙。 -->
+        <object position="0 0.2 0.5" scale="0.6">
+            <!-- 地面：局部坐标 y = -2.5。 -->
+            <triangle v0="-3 -2.5 3" v1="3 -2.5 9" v2="3 -2.5 3" />
+            <triangle v0="-3 -2.5 3" v1="-3 -2.5 9" v2="3 -2.5 9" />
 
-        <!-- Left wall, x = -3. -->
-        <triangle v0="-3 -2.5 3" v1="-3 2.5 9" v2="-3 -2.5 9" />
-        <triangle v0="-3 -2.5 3" v1="-3 2.5 3" v2="-3 2.5 9" />
+            <!-- 天花板：局部坐标 y = 2.5。 -->
+            <triangle v0="-3 2.5 3" v1="3 2.5 3" v2="3 2.5 9" />
+            <triangle v0="-3 2.5 3" v1="3 2.5 9" v2="-3 2.5 9" />
 
-        <!-- Right wall, x = 3. -->
-        <triangle v0="3 -2.5 3" v1="3 -2.5 9" v2="3 2.5 9" />
-        <triangle v0="3 -2.5 3" v1="3 2.5 9" v2="3 2.5 3" />
-    </object>
+            <!-- 后墙：局部坐标 z = 9。 -->
+            <triangle v0="-3 -2.5 9" v1="3 2.5 9" v2="3 -2.5 9" />
+            <triangle v0="-3 -2.5 9" v1="-3 2.5 9" v2="3 2.5 9" />
 
-    <!-- Visible test objects inside the box. -->
-    <object position="-0.8 -0.7 4.0" euler="0 0 0" scale="1">
-        <sphere radius="0.45" />
-    </object>
-    <object position="0.8 -0.4 4.6" euler="0 0 0" scale="1">
-        <sphere radius="0.55" />
-    </object>
+            <!-- 左墙：局部坐标 x = -3。 -->
+            <triangle v0="-3 -2.5 3" v1="-3 2.5 9" v2="-3 -2.5 9" />
+            <triangle v0="-3 -2.5 3" v1="-3 2.5 3" v2="-3 2.5 9" />
+
+            <!-- 右墙：局部坐标 x = 3。 -->
+            <triangle v0="3 -2.5 3" v1="3 -2.5 9" v2="3 2.5 9" />
+            <triangle v0="3 -2.5 3" v1="3 2.5 9" v2="3 2.5 3" />
+        </object>
+
+        <!-- 盒内的两个测试球体。 -->
+        <object position="-0.8 -0.7 4.0">
+            <sphere radius="0.45" />
+        </object>
+        <object position="0.8 -0.4 4.6">
+            <sphere radius="0.55" />
+        </object>
+    </objects>
 </scene>

@@ -8,15 +8,9 @@ class Camera
 {
 public:
     // 根据相机姿态、透视参数和渲染尺寸创建各级变换矩阵。
-    void Initialize(
-        const glm::vec3& position, // 相机在世界坐标系中的位置
-        const glm::vec3& forward,  // 相机观察方向
-        const glm::vec3& up,       // 相机上方向
-        float verticalFov,         // 垂直视场角，单位为度
-        float nearClip,            // 近裁剪面距离
-        float farClip,             // 远裁剪面距离
-        unsigned width,            // 渲染区域宽度
-        unsigned height);          // 渲染区域高度
+    // position 是世界坐标；forward 和 up 指定朝向；verticalFov 单位为度。
+    // nearClip、farClip 是裁剪距离；width、height 是渲染区域尺寸。
+    void Initialize(const glm::vec3& position, const glm::vec3& forward, const glm::vec3& up, float verticalFov, float nearClip, float farClip, unsigned width, unsigned height);
 
     // 以下接口分别提供观察、投影、视口及三者的联合矩阵。
     const glm::mat4& GetViewMatrix() const;

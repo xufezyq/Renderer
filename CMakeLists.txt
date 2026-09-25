@@ -106,9 +106,23 @@ if (MSVC)
 endif()
 add_test(NAME PrimitiveTests COMMAND PrimitiveTests)
 
+add_executable(LightTests
+    tests/LightTests.cpp
+    source/Light.cpp
+)
+target_include_directories(LightTests PRIVATE
+    "${CMAKE_SOURCE_DIR}/source"
+    "${CMAKE_SOURCE_DIR}/glm"
+)
+if (MSVC)
+    target_compile_options(LightTests PRIVATE /utf-8)
+endif()
+add_test(NAME LightTests COMMAND LightTests)
+
 add_executable(SceneTests
     tests/SceneTests.cpp
     source/Disk.cpp
+    source/Light.cpp
     source/Scene.cpp
     source/SceneObject.cpp
     source/Sphere.cpp
@@ -127,6 +141,7 @@ add_executable(RendererTests
     tests/RendererTests.cpp
     source/Camera.cpp
     source/Disk.cpp
+    source/Light.cpp
     source/RenderTiming.cpp
     source/Renderer.cpp
     source/Scene.cpp
@@ -144,6 +159,11 @@ if (MSVC)
     target_compile_options(RendererTests PRIVATE /utf-8)
 endif()
 add_test(NAME RendererTests COMMAND RendererTests)
+
+configure_file("${CMAKE_SOURCE_DIR}/tests/ShadowScene.xml" "${CMAKE_CURRENT_BINARY_DIR}/ShadowScene.xml" COPYONLY)
+add_custom_command(TARGET RendererTests POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_CURRENT_BINARY_DIR}/ShadowScene.xml" "$<TARGET_FILE_DIR:RendererTests>/ShadowScene.xml")
+configure_file("${CMAKE_SOURCE_DIR}/tests/DirectionalShadowScene.xml" "${CMAKE_CURRENT_BINARY_DIR}/DirectionalShadowScene.xml" COPYONLY)
+add_custom_command(TARGET RendererTests POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_CURRENT_BINARY_DIR}/DirectionalShadowScene.xml" "$<TARGET_FILE_DIR:RendererTests>/DirectionalShadowScene.xml")
 
 foreach(target FortuneRenderer SceneTests RendererTests)
     add_custom_command(TARGET ${target} POST_BUILD

@@ -71,12 +71,17 @@ $writer = [System.IO.StreamWriter]::new(
     [System.Text.UTF8Encoding]::new($false))
 try {
     $writer.WriteLine('<?xml version="1.0" encoding="UTF-8"?>')
-    $writer.WriteLine('<!-- Generated from an OBJ mesh. Faces are triangulated; materials are intentionally ignored. -->')
+    $writer.WriteLine('<!-- 由 OBJ 模型生成；面已三角化，未导入材质。 -->')
     if ($MirrorX) {
-        $writer.WriteLine('<!-- The source was mirrored left/right; X coordinates and triangle winding were corrected. -->')
+        $writer.WriteLine('<!-- 已沿 X 轴镜像模型，并修正三角形顶点顺序。 -->')
     }
-    $writer.WriteLine('<scene camera_position="0 36 -4" camera_forward="0 -0.98 0.11" camera_up="0 1 0" camera_fov="75">')
-    $writer.WriteLine('    <object position="0 0 0" euler="0 0 0" scale="' + (Format-Float $Scale) + '">')
+    $writer.WriteLine('<scene version="2">')
+    $writer.WriteLine('    <camera')
+    $writer.WriteLine('        position="0 36 -4"')
+    $writer.WriteLine('        forward="0 -0.98 0.11"')
+    $writer.WriteLine('        fov="75" />')
+    $writer.WriteLine('    <objects>')
+    $writer.WriteLine('        <object scale="' + (Format-Float $Scale) + '">')
 
     foreach ($face in $faces) {
         for ($i = 1; $i -lt ($face.Count - 1); ++$i) {
@@ -92,7 +97,7 @@ try {
             $crossX = $aby * $acz - $abz * $acy
             $crossY = $abz * $acx - $abx * $acz
             $crossZ = $abx * $acy - $aby * $acx
-            # Keep a margin for the renderer's single-precision triangle math.
+            # 为渲染器的单精度三角形计算保留误差余量。
             if (($crossX * $crossX + $crossY * $crossY + $crossZ * $crossZ) -le 1.0e-4) {
                 ++$skippedTriangles
                 continue
@@ -107,11 +112,12 @@ try {
             $v0 = Format-Vertex $vertex0 $MirrorX
             $v1 = Format-Vertex $vertex1 $MirrorX
             $v2 = Format-Vertex $vertex2 $MirrorX
-            $writer.WriteLine(('        <triangle v0="{0}" v1="{1}" v2="{2}" />' -f $v0, $v1, $v2))
+            $writer.WriteLine(('            <triangle v0="{0}" v1="{1}" v2="{2}" />' -f $v0, $v1, $v2))
         }
     }
 
-    $writer.WriteLine('    </object>')
+    $writer.WriteLine('        </object>')
+    $writer.WriteLine('    </objects>')
     $writer.WriteLine('</scene>')
 }
 finally {

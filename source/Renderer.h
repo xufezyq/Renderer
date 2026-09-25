@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Camera.h"
+#include "Color.h"
 #include "Scene.h"
 
 #include <atomic>
@@ -11,23 +12,13 @@
 #include <thread>
 #include <vector>
 
-struct Color
-{
-    float r;
-    float g;
-    float b;
-};
-
 class Renderer
 {
 public:
-    Renderer(
-        unsigned width,
-        unsigned height,
-        bool enable_ssaa = true,
-        unsigned samples_per_axis = 2,
-        const std::string& scene_file_path = "scene.xml");
+    Renderer(unsigned width, unsigned height, bool enable_ssaa = true, unsigned samples_per_axis = 2, const std::string& scene_file_path = "scene.xml");
     Color RednerPixel(int x, int y) const;
+    // 沿射线求交，并计算交点接收的直接辐照度；未命中时返回黑色。
+    Color GetIrradiance(const Ray& ray) const;
     int run();
 
 private:

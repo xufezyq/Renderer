@@ -35,7 +35,7 @@ int main()
     assert(scene.GetLights()[1].get() == directional_light);
     assert(scene.GetLights()[2].get() == spot_light);
 
-    scene.LoadSceneFromXML("scene.xml");
+    scene.LoadSceneFromXML("scenes/scene.xml");
     assert(scene.GetLights().size() == 3);
     const auto* loaded_directional = dynamic_cast<const DirectionalLight*>(scene.GetLights()[0].get());
     const auto* loaded_point = dynamic_cast<const PointLight*>(scene.GetLights()[1].get());
@@ -53,32 +53,40 @@ int main()
     assert(loaded_spot->GetAttenuations() == glm::vec3(0.1f, 0.2f, 1.0f));
 
     Scene loaded_scene;
-    loaded_scene.LoadSceneFromXML("scene.xml");
+    loaded_scene.LoadSceneFromXML("scenes/scene.xml");
     Intersection loaded_intersection{};
     assert(loaded_scene.Intersect(ray, loaded_intersection));
     assert(loaded_intersection.primitive != nullptr);
 
     Scene cornell_scene;
-    cornell_scene.LoadSceneFromXML("cornell_box.xml");
-    assert(cornell_scene.GetLights().size() == 2);
-    assert(dynamic_cast<const PointLight*>(cornell_scene.GetLights()[0].get()) != nullptr);
-    const auto* cornell_spot = dynamic_cast<const SpotLight*>(cornell_scene.GetLights()[1].get());
+    cornell_scene.LoadSceneFromXML("scenes/cornell_box.xml");
+    assert(cornell_scene.GetLights().size() == 3);
+    assert(dynamic_cast<const DirectionalLight*>(cornell_scene.GetLights()[0].get()) != nullptr);
+    const auto* cornell_point = dynamic_cast<const PointLight*>(cornell_scene.GetLights()[1].get());
+    assert(cornell_point != nullptr && cornell_point->GetPosition() == glm::vec3(-0.7f, 0.0f, 3.5f));
+    const auto* cornell_spot = dynamic_cast<const SpotLight*>(cornell_scene.GetLights()[2].get());
     assert(cornell_spot != nullptr);
-    assert(cornell_spot->GetPosition() == glm::vec3(-1.5f, 1.5f, 4.6f));
-    assert(glm::dot(cornell_spot->GetDirection(), glm::normalize(glm::vec3(1.4f, -1.9f, 0.0f))) > 0.999f);
+    assert(cornell_spot->GetPosition() == glm::vec3(0.85f, 1.1f, 3.3f));
+    assert(glm::dot(cornell_spot->GetDirection(), glm::normalize(glm::vec3(0.0f, -2.4f, 1.3f))) > 0.999f);
     Intersection cornell_intersection{};
     assert(cornell_scene.Intersect(ray, cornell_intersection));
     assert(cornell_intersection.primitive != nullptr);
 
     Scene dust2_scene;
-    dust2_scene.LoadSceneFromXML("dust2.xml");
+    dust2_scene.LoadSceneFromXML("scenes/dust2.xml");
     assert(dust2_scene.GetCameraSettings().position == glm::vec3(0.0f, 36.0f, -4.0f));
     assert(dust2_scene.GetCameraSettings().verticalFov == 75.0f);
 
     Scene legacy_scene;
-    legacy_scene.LoadSceneFromXML("dust2_model.xml");
+    legacy_scene.LoadSceneFromXML("scenes/dust2_model.xml");
     assert(legacy_scene.GetCameraSettings().position == glm::vec3(-18.782f, 3.773f, -9.283f));
     assert(legacy_scene.GetCameraSettings().verticalFov == 65.0f);
+    assert(legacy_scene.GetLights().size() == 3);
+    assert(dynamic_cast<const DirectionalLight*>(legacy_scene.GetLights()[0].get()) != nullptr);
+    const auto* legacy_point = dynamic_cast<const PointLight*>(legacy_scene.GetLights()[1].get());
+    const auto* legacy_spot = dynamic_cast<const SpotLight*>(legacy_scene.GetLights()[2].get());
+    assert(legacy_point != nullptr && legacy_point->GetPosition() == glm::vec3(-16.5f, 5.0f, -12.0f));
+    assert(legacy_spot != nullptr && legacy_spot->GetPosition() == glm::vec3(-17.0f, 6.0f, -11.0f));
 
     return 0;
 }

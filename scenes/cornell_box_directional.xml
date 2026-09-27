@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 相机位于原点，朝 +Z 方向观察；盒体整体沿 +Y 移动 0.2、沿 +Z 移动 0.5。 -->
+<scene version="2">
+    <camera position="0 0 0" forward="0 0 1" fov="60" />
+
+    <lights>
+        <!-- 从敞开的前方斜射入盒内，在地面和球体上形成同向阴影。 -->
+        <directional direction="0.3 -0.6 1" radiance="0.65 0.6 0.54" />
+    </lights>
+
+    <objects>
+        <!-- 地面、天花板、后墙、左墙和右墙。 -->
+        <object position="0 0.2 0.5" scale="0.6">
+            <!-- 地面：局部坐标 y = -2.5。 -->
+            <triangle v0="-3 -2.5 3" v1="3 -2.5 9" v2="3 -2.5 3" />
+            <triangle v0="-3 -2.5 3" v1="-3 -2.5 9" v2="3 -2.5 9" />
+
+            <!-- 天花板：局部坐标 y = 2.5。 -->
+            <triangle v0="-3 2.5 3" v1="3 2.5 3" v2="3 2.5 9" />
+            <triangle v0="-3 2.5 3" v1="3 2.5 9" v2="-3 2.5 9" />
+
+            <!-- 后墙：局部坐标 z = 9。 -->
+            <triangle v0="-3 -2.5 9" v1="3 2.5 9" v2="3 -2.5 9" />
+            <triangle v0="-3 -2.5 9" v1="-3 2.5 9" v2="3 2.5 9" />
+
+            <!-- 左墙：局部坐标 x = -3。 -->
+            <triangle v0="-3 -2.5 3" v1="-3 2.5 9" v2="-3 -2.5 9" />
+            <triangle v0="-3 -2.5 3" v1="-3 2.5 3" v2="-3 2.5 9" />
+
+            <!-- 右墙：局部坐标 x = 3。 -->
+            <triangle v0="3 -2.5 3" v1="3 -2.5 9" v2="3 2.5 9" />
+            <triangle v0="3 -2.5 3" v1="3 2.5 9" v2="3 2.5 3" />
+        </object>
+
+        <!-- 盒内的两个测试球体。 -->
+        <object position="-0.8 -0.7 4.0">
+            <sphere radius="0.45" />
+        </object>
+        <object position="0.8 -0.4 4.6">
+            <sphere radius="0.55" />
+        </object>
+    </objects>
+</scene>

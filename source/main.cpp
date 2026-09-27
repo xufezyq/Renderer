@@ -8,9 +8,9 @@ int main(int argc, char* argv[])
 {
     unsigned width = 800;
     unsigned height = 450;
-    std::string scene_file_path = "cornell_box.xml";
+    std::string scene_file_path = "scenes/dust2_model_point.xml";
     constexpr bool enable_ssaa = false;
-    constexpr unsigned ssaa_samples_per_axis = 2;
+    constexpr unsigned ssaa_samples_per_axis = 4;
 
     try
     {

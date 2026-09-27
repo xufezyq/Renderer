@@ -41,7 +41,7 @@ int main()
     assert_color_near(renderer.GetIrradiance(miss_ray), Color{0.0f, 0.0f, 0.0f});
 
     Scene scene;
-    scene.LoadSceneFromXML("scene.xml");
+    scene.LoadSceneFromXML("scenes/scene.xml");
     Camera camera;
     const SceneCameraSettings& settings = scene.GetCameraSettings();
     camera.Initialize(settings.position, settings.forward, settings.up, settings.verticalFov, 0.1f, 1000.0f, 800, 600);
@@ -69,7 +69,7 @@ int main()
     const Color background = renderer.RednerPixel(0, 0);
     assert_color_near(background, Color{0.0f, 0.0f, 0.0f});
 
-    const Renderer cornell_renderer(800, 600, true, 2, "cornell_box.xml");
+    const Renderer cornell_renderer(800, 600, true, 2, "scenes/cornell_box.xml");
     const Color cornell_center = cornell_renderer.RednerPixel(400, 300);
     assert(std::isfinite(cornell_center.r) && std::isfinite(cornell_center.g) && std::isfinite(cornell_center.b));
     assert(cornell_center.r > 0.0f || cornell_center.g > 0.0f || cornell_center.b > 0.0f);
